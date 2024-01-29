@@ -21,7 +21,7 @@ vertexai.init(project=PROJECT_ID, location=REGION)
 from vertexai.language_models import (
     TextGenerationModel,
     # TextEmbeddingModel,
-    # ChatModel,
+    ChatModel,
     # InputOutputTextPair,
     # CodeGenerationModel,
     # CodeChatModel,
@@ -30,7 +30,7 @@ from vertexai.language_models import (
 
 # Uses only TextGenerationModel (From vertexai)
 def text_generation(
-        prompt="What is a large language model?"
+          prompt="What is a large language model?"
         , temperature=0.0  # 0.0 - 1.0
         , max_output_tokens=128  # 1-1024
         , top_p=0.95  # 0.0 - 1.0
@@ -48,10 +48,20 @@ def text_generation(
     )
     print(response.text)
 
+def chatting(
+    prompt="Hello! Can you write a 300 word abstract for a research paper I need to write about the impact of AI on society?"
+):
+    chat_model = ChatModel.from_pretrained("chat-bison@001")
+    chat = chat_model.start_chat()
+
+    print(chat.send_message(prompt))
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # print_hi('PyCharm')
+
+    # #####################################
+    # TEXT
+    # #####################################
     my_industry = "tech"
     # prompt example example
     prompt = f"""Create a numbered list of 10 items. Each item in the list should
@@ -63,17 +73,22 @@ if __name__ == '__main__':
     # prompt = "Complete the sentence: As I prepared the picture frame, I reached into my toolkit to fetch my:"
 
     # top_p example
-    prompt = "Create a marketing campaign for jackets that involves blue elephants and avocados."
+    # prompt = "Create a marketing campaign for jackets that involves blue elephants and avocados."
 
     # top_k example
     prompt = "Write a 2-day itinerary for France."
 
-    text_generation(
-          prompt=prompt
-        , temperature=0
-        , max_output_tokens=1024
-        , top_p=0.95
-        , top_k=40
-    )
+    # text_generation(
+    #       prompt=prompt
+    #     , temperature=0
+    #     , max_output_tokens=1024
+    #     , top_p=0.95
+    #     , top_k=40
+    # )
+
+    # #####################################
+    # CHAT
+    # #####################################
+    chatting()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
