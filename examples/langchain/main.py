@@ -7,6 +7,7 @@ import vertexai
 import os
 from langchain.llms import VertexAI
 
+from EmbeddingEngine import EmbeddingEngine
 from ReAct import ReActProcessor
 
 llm = None
@@ -137,10 +138,15 @@ if __name__ == '__main__':
     # chain_of_thought_self_consistency_example()
 
     # Tools with ReAct (short for Reasoning & Acting) setup
-    react = ReActProcessor(llm)
-    prediction = react.process("What is today's date?")
-    print(f"Predication: {prediction}")
-    prediction = react.process("Who are you?")
-    print(f"Predication: {prediction}")
+    # react = ReActProcessor(llm)
+    # prediction = react.process("What is today's date?")
+    # print(f"Predication: {prediction}")
+    # prediction = react.process("Who are you?")
+    # print(f"Predication: {prediction}")
+
+    embed = EmbeddingEngine(PROJECT_ID, REGION)
+    df = embed.load_data(50)
+    df = embed.get_embeddings(df)
+    embed.get_similarities(df)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
