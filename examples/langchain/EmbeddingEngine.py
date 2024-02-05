@@ -72,6 +72,14 @@ class EmbeddingEngine:
         print_data(df)
         return df
 
+    def export_embeddings(self, df, filename, file_format="jsonl"):
+        if file_format == "jsonl":
+            jsonl_string = df[["id", "embedding"]].to_json(orient="records", lines=True)
+            with open(filename, "w") as f:
+                f.write(jsonl_string)
+        else:
+            raise Exception(f"Failed to export! Unsupported format: {file_format}")
+
     def get_similarities(self, df, metric_type="product"):
         """
         In case of the model textembedding-gecko@001, we need to use inner product (dot product).

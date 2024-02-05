@@ -1,4 +1,4 @@
-google-cloud-aiplatform==1.36.2
+google-cloud-aiplatform==1.36.4
 langchain==0.0.310
 prettyprinter==0.18.0
 wikipedia==1.4.0

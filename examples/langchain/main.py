@@ -2,19 +2,27 @@
 
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+import time
 
 import vertexai
 import os
 from langchain.llms import VertexAI
 
 from EmbeddingEngine import EmbeddingEngine
+from GCSUtil import GCSUtil
 from ReAct import ReActProcessor
+from VectorSearch import VectorSearchDB
 
 llm = None
 
 PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
 MODEL_NAME = "text-bison@001"  # @param {type:"string"}
+
+
+def get_uid():
+    from datetime import datetime
+    return datetime.now().strftime("%m%d%H%M")
 
 
 # Initialize Vertex AI SDK
@@ -125,7 +133,7 @@ def chain_of_thought_self_consistency_example():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    setupVertexAI()
+    # setupVertexAI()
 
     # Simple Prediction Example
     prompt = "Write a 2-day itinerary for France."
@@ -144,9 +152,62 @@ if __name__ == '__main__':
     # prediction = react.process("Who are you?")
     # print(f"Predication: {prediction}")
 
+    embeddings_json_file = "/tmp/questions.json"
     embed = EmbeddingEngine(PROJECT_ID, REGION)
+    # if not os.path.exists(embeddings_json_file):
+    #     print(f"embeddings file '{embeddings_json_file}' not found. creating new embeddings..")
     df = embed.load_data(50)
     df = embed.get_embeddings(df)
     embed.get_similarities(df)
+    embed.export_embeddings(df, embeddings_json_file)
+    # else:
+    #     print(f"Embeddings already exist: {embeddings_json_file}")
+
+    # Bucket create only if needed
+    display_name_prefix = f"embvs-tutorial-index"
+    uid = get_uid()
+    display_name = f"{display_name_prefix}-{uid}"
+    bucket_name = f"{display_name}"
+
+    gcs = GCSUtil()
+    bucket = None
+    buckets = gcs.get_bucket_matching(display_name_prefix)
+    if not buckets:
+        print(f"No bucket found matching name prefix: {display_name_prefix}. Creating one")
+        bucket = gcs.create_bucket(bucket_name, REGION)
+        gcs.add_file(bucket.name, embeddings_json_file)
+    else:
+        print(f"bucket(s) already exists: {list(buckets)}. (first one will be used if more than one)")
+        bucket = gcs.get_bucket(list(buckets)[0])
+
+    bucket_uri = f"gs://{bucket.name}"
+    print(f"Bucket uri: {bucket_uri}")
+
+    try:
+        vector_search = VectorSearchDB(PROJECT_ID, REGION)
+        # TODO if existing bucket then vector search and bucket will have different names/id
+        vector_search.create_index(display_name, bucket_uri)
+        print("vector search index built!")
+
+        time.sleep(60)  # TODO check if this resolves 503/SSL error
+        print("Querying the vector...")
+        # query
+        query = "How to read JSON with Python?"
+        test_embeddings = embed.get_embeddings_wrapper([query])
+        response = vector_search.query(test_embeddings)
+
+        # show the result
+        import numpy as np
+
+        for idx, neighbor in enumerate(response[0]):
+            id = np.int64(neighbor.id)
+            similar = df.query("id == @id", engine="python")
+            print(f"{neighbor.distance:.4f} {similar.title.values[0]}")
+    except Exception as e:
+        print(f"Failed with error: {e}")
+    finally:
+        input("Press Enter to clean up...:")
+        vector_search.destroy()
+        # gcs.delete_bucket(bucket_name)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
