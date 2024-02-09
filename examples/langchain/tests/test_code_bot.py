@@ -1,5 +1,5 @@
 import unittest
-from CodeApi import CodeBot
+from src.CodeApi import CodeBot
 
 
 class TestCodeBot(unittest.TestCase):

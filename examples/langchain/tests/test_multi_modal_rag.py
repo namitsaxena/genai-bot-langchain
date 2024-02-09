@@ -1,6 +1,6 @@
 import unittest
 
-from RAGMultimodal import MultiModalRAG
+from src.RAGMultimodal import MultiModalRAG
 
 PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
@@ -8,7 +8,6 @@ REGION = "us-central1"  # @param {type:"string"}
 
 class TestMultiModalRAG(unittest.TestCase):
 
-    # @unittest.skip("only for manual execution")
     def test_document_metadata(self):
         pdf_file = "../resources/google-10k-sample-14pages.pdf"
         output_image_dir = "../resources/images"
