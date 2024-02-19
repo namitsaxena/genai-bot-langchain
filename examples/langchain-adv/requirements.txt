@@ -1,0 +1,5 @@
+langchain
+langchain-core
+langchain-google-vertexai
+beautifulsoup4
+faiss-cpu
