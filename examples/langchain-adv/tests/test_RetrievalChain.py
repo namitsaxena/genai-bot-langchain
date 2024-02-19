@@ -1,8 +1,9 @@
 from unittest import TestCase
 
-from src.RetrievalChain import RetrievalChain
-from src.Factory import get_embeddings_instance
-from src.Factory import get_web_loader_instance
+from RetrievalChain import RetrievalChain
+from Factory import get_embeddings_instance
+from Factory import get_web_loader_instance
+from Factory import get_vector_store_instance
 from langchain_core.documents import Document
 
 URL = "https://docs.smith.langchain.com"
@@ -12,11 +13,15 @@ EMBEDDING_MODEL = "textembedding-gecko@001"
 class TestRetrievalChain(TestCase):
 
     def setUp(self):  # new
-        self.chain = RetrievalChain(get_web_loader_instance(URL), get_embeddings_instance(model=EMBEDDING_MODEL))
+        self.chain = RetrievalChain(
+              get_web_loader_instance(URL)
+            , get_embeddings_instance(model=EMBEDDING_MODEL)
+            , get_vector_store_instance()
+        )
 
     def test_retrieval_query(self):
         query = "what is langsmith?"
-        response = self.chain.query_with_retrieval(query)
+        response = self.chain.query(query)
         print(f"Response: {response['answer']}")
 
     def test_static_query(self):

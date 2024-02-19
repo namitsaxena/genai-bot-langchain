@@ -3,9 +3,10 @@ class RetrievalChain:
     """
     https://python.langchain.com/docs/get_started/quickstart
     """
-    def __init__(self, loader, embeddings):
+    def __init__(self, loader, embeddings, vector_store):
         self.loader = loader
         self.embeddings = embeddings
+        self.vector_store = vector_store
         self.vector = None
         self.document_chain = None
         self.retrieval_chain = None
@@ -26,11 +27,10 @@ class RetrievalChain:
         :param embeddings: embeddings model (not embedding for a text)
         :return:
         """
-        from langchain_community.vectorstores import FAISS
         from langchain.text_splitter import RecursiveCharacterTextSplitter
         text_splitter = RecursiveCharacterTextSplitter()
         documents = text_splitter.split_documents(docs)
-        self.vector = FAISS.from_documents(documents, self.embeddings)
+        self.vector = self.vector_store.from_documents(documents, self.embeddings)
 
     def setup_document_chain(self):
         from langchain_google_vertexai import VertexAI
@@ -61,7 +61,12 @@ class RetrievalChain:
         """
         return self.document_chain.invoke(query)
 
-    def query_with_retrieval(self, query):
+    def query(self, query):
+        """
+        queries LLM with retrieval/RAG
+        :param query:
+        :return:
+        """
         response = self.retrieval_chain.invoke({"input": f"{query}"})
         return response
 
