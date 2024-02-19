@@ -3,11 +3,13 @@ class RetrievalChain:
     """
     https://python.langchain.com/docs/get_started/quickstart
     """
-    def __init__(self, loader, embeddings, vector_store):
+    def __init__(self, llm, loader, embeddings, vector_store, text_splitter):
+        self.llm = llm
         self.loader = loader
         self.embeddings = embeddings
         self.vector_store = vector_store
         self.vector = None
+        self.text_splitter = text_splitter
         self.document_chain = None
         self.retrieval_chain = None
         # actual setup
@@ -32,6 +34,9 @@ class RetrievalChain:
         documents = text_splitter.split_documents(docs)
         self.vector = self.vector_store.from_documents(documents, self.embeddings)
 
+    def get_vector_db(self):
+        return self.vector
+
     def setup_document_chain(self):
         from langchain_google_vertexai import VertexAI
         from langchain_core.prompts import ChatPromptTemplate
@@ -45,8 +50,7 @@ class RetrievalChain:
 
         Question: {input}""")
 
-        llm = VertexAI(model_name="gemini-pro")#TODO
-        self.document_chain = create_stuff_documents_chain(llm, prompt)
+        self.document_chain = create_stuff_documents_chain(self.llm, prompt)
 
     def setup_retrieval_chain(self):
         from langchain.chains import create_retrieval_chain

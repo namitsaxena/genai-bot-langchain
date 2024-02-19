@@ -1,9 +1,8 @@
 from unittest import TestCase
 
-from RetrievalChain import RetrievalChain
+import Factory
 from Factory import get_embeddings_instance
 from Factory import get_web_loader_instance
-from Factory import get_vector_store_instance
 from langchain_core.documents import Document
 
 URL = "https://docs.smith.langchain.com"
@@ -13,11 +12,7 @@ EMBEDDING_MODEL = "textembedding-gecko@001"
 class TestRetrievalChain(TestCase):
 
     def setUp(self):  # new
-        self.chain = RetrievalChain(
-              get_web_loader_instance(URL)
-            , get_embeddings_instance(model=EMBEDDING_MODEL)
-            , get_vector_store_instance()
-        )
+        self.chain = Factory.get_chain(Factory.CHAIN_VERTEX_WEB_FAISS, URL)
 
     def test_retrieval_query(self):
         query = "what is langsmith?"
@@ -50,3 +45,19 @@ class TestRetrievalChain(TestCase):
         text = "This is a text document"
         result = embeddings.embed_documents([text])
         print(f"Result: {result[0:5]}")
+
+    def test_vector_db_query(self):
+        """
+        https://python.langchain.com/docs/integrations/vectorstores/faiss
+        :return:
+        """
+        url = "https://www.engadget.com/the-best-budgeting-apps-to-replace-mint-143047346.html"
+        chain = Factory.get_chain(Factory.CHAIN_VERTEX_WEB_FAISS, url)
+        vector = chain.get_vector_db()
+        query = "which is the best alternative?"
+        docs = vector.similarity_search(query)
+        print(f"Num Docs: {len(docs)}")
+        print(f"Doc#1: {docs[0].page_content}")
+        # regular query for comparison
+        response = chain.query(query)
+        print(f"Response: {response['answer']}")
