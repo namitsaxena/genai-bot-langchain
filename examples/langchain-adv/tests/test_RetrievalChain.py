@@ -1,47 +1,47 @@
 from unittest import TestCase
 
 from src.RetrievalChain import RetrievalChain
+from src.Factory import get_embeddings_instance
+from src.Factory import get_web_loader_instance
+from langchain_core.documents import Document
+
+URL = "https://docs.smith.langchain.com"
+EMBEDDING_MODEL = "textembedding-gecko@001"
 
 
 class TestRetrievalChain(TestCase):
+
+    def setUp(self):  # new
+        self.chain = RetrievalChain(get_web_loader_instance(URL), get_embeddings_instance(model=EMBEDDING_MODEL))
+
     def test_retrieval_query(self):
-        chain = RetrievalChain()
-        chain.setup_loader()
-        docs = chain.load_data()
-        chain.setup_embedding()
-        chain.load_vector_db(docs)
-        chain.setup_document_chain()
-        chain.setup_retrieval_chain()
-        # response = chain.query_with_retrieval("how can langsmith help with testing?") #DOESN'T ANSWER THIS
-        # response = chain.query_with_retrieval("who built langsmith")
-        response = chain.query_with_retrieval("what is langsmith")
+        query = "what is langsmith?"
+        response = self.chain.query_with_retrieval(query)
         print(f"Response: {response['answer']}")
 
     def test_static_query(self):
-        chain = RetrievalChain()
-        chain.setup_loader()
-        docs = chain.load_data()
-        chain.setup_embedding()
-        chain.load_vector_db(docs)
-        chain.setup_document_chain()
-        output = chain.query_static_context()
+        query = {
+            "input": "how can langsmith help with testing?",
+            "context": [Document(page_content="langsmith can let you visualize test results")]
+        }
+        output = self.chain.query_static_context(query)
         print(f"Output: {output}")
 
-    def test_vector_db(self):
-        chain = RetrievalChain()
-        chain.setup_loader()
-        docs = chain.load_data()
-        chain.setup_embedding()
-        chain.load_vector_db(docs)
-
     def test_load_web(self):
-        chain = RetrievalChain()
-        chain.setup_loader()
-        docs = chain.load_data()
+        loader = get_web_loader_instance(URL)
+        docs = loader.load()
         print(f"Documents: {docs}")
 
-    def test_embedding_generation(self):
-        chain = RetrievalChain()
-        chain.setup_embedding()
-        chain.get_embedding()
+    # https://python.langchain.com/docs/integrations/text_embedding/google_vertex_ai_palm
+    # https://python.langchain.com/docs/modules/data_connection/text_embedding/
+    def test_embedding_query(self):
+        embeddings = get_embeddings_instance(EMBEDDING_MODEL)
+        text = "This is a text document"
+        result = embeddings.embed_query(text)
+        print(f"Result: {result[0:5]}")
 
+    def test_embedding_document(self):
+        embeddings = get_embeddings_instance(EMBEDDING_MODEL)
+        text = "This is a text document"
+        result = embeddings.embed_documents([text])
+        print(f"Result: {result[0:5]}")

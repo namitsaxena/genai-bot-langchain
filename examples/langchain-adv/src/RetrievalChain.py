@@ -3,36 +3,21 @@ class RetrievalChain:
     """
     https://python.langchain.com/docs/get_started/quickstart
     """
-    def __init__(self):
-        self.loader = None
-        self.embeddings = None
+    def __init__(self, loader, embeddings):
+        self.loader = loader
+        self.embeddings = embeddings
         self.vector = None
         self.document_chain = None
         self.retrieval_chain = None
-
-    def setup_loader(self, url="https://docs.smith.langchain.com"):
-        from langchain_community.document_loaders import WebBaseLoader
-        self.loader = WebBaseLoader(url)
-
-    def setup_embedding(self, model="textembedding-gecko@001"):
-        from langchain_google_vertexai import VertexAIEmbeddings
-        self.embeddings = VertexAIEmbeddings(model_name=model)
+        # actual setup
+        docs = self.load_data()
+        self.load_vector_db(docs)
+        self.setup_document_chain()
+        self.setup_retrieval_chain()
 
     def load_data(self):
         docs = self.loader.load()
         return docs
-
-    # https://python.langchain.com/docs/integrations/text_embedding/google_vertex_ai_palm
-    # https://python.langchain.com/docs/modules/data_connection/text_embedding/
-    def get_embedding(self, text="This is a text document"):
-        # takes a single text
-        query_result = self.embeddings.embed_query(text)
-        # print(f"Query Result: {query_result[0:5]}")
-
-        # takes as input multiple texts
-        doc_result = self.embeddings.embed_documents([text])
-        # print(f"Document Result: {doc_result[0:5]}")
-        return query_result
 
     def load_vector_db(self, docs):
         """
@@ -69,22 +54,15 @@ class RetrievalChain:
         retriever = self.vector.as_retriever()
         self.retrieval_chain = create_retrieval_chain(retriever, self.document_chain)
 
-    def query_static_context(self):
+    def query_static_context(self, query):
         """
         test method with static query and context
         :return:
         """
-        from langchain_core.documents import Document
-
-        return self.document_chain.invoke({
-            "input": "how can langsmith help with testing?",
-            "context": [Document(page_content="langsmith can let you visualize test results")]
-        })
+        return self.document_chain.invoke(query)
 
     def query_with_retrieval(self, query):
         response = self.retrieval_chain.invoke({"input": f"{query}"})
-        # print(response["answer"])
-        # LangSmith offers several features that can help with testing:...
         return response
 
 
