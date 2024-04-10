@@ -8,3 +8,5 @@ This is built using examples, etc found on langchain's website.
   - Google Vertex AI PaLM |  Langchain[[python.langchain.com](https://python.langchain.com/docs/integrations/text_embedding/google_vertex_ai_palm)]
   - Google Generative AI Embeddings |  Langchain[[python.langchain.com](https://python.langchain.com/docs/integrations/text_embedding/google_generative_ai)]
   - Text embedding models | Langchain[[python.langchain.com](https://python.langchain.com/docs/modules/data_connection/text_embedding/)]
+- Vector stores | Langchain[[python.langchain.com](https://python.langchain.com/docs/modules/data_connection/vectorstores)]
+- Faiss | Langchain[[python.langchain.com](https://python.langchain.com/docs/integrations/vectorstores/faiss)]
