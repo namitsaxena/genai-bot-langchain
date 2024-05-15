@@ -6,6 +6,9 @@ from langchain_community.embeddings.sentence_transformer import (
 from langchain_text_splitters import CharacterTextSplitter
 import os
 
+# sentence transformer model
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+
 v_input_file = os.getenv("INPUT_FILE")
 if v_input_file is None:
     v_input_file = "./state_of_the_union.txt"
@@ -32,7 +35,7 @@ text_splitter = CharacterTextSplitter(chunk_size=v_chunk_size, chunk_overlap=0)
 docs = text_splitter.split_documents(documents)
 
 # create the open-source embedding function
-embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+embedding_function = SentenceTransformerEmbeddings(model_name=EMBEDDING_MODEL)
 
 # load it into Chroma
 db = Chroma.from_documents(docs, embedding_function)
