@@ -13,7 +13,7 @@ class KubernetesCommandInput(BaseModel):
     namespace: str = Field(description="should be a kubernetes namespace")
 
 
-class KubernetesExecutor(BaseTool):
+class KubernetesTool(BaseTool):
     name = "kubernetes_helper"
     description = "useful for when you need to interact with kubernetes or gke clusters"
     args_schema: Type[BaseModel] = KubernetesCommandInput

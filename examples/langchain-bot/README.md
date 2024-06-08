@@ -15,3 +15,14 @@
 	Successfully installed pip-24.0  
   ```
 * ```pip3 install -r requirements.txt```  
+
+## Resources
+* Structured Tools
+  - Defining Custom Tools | LangChain[[python.langchain.com](https://python.langchain.com/v0.1/docs/modules/tools/custom_tools/)]
+  - Structured Tools[[blog.langchain.dev](https://blog.langchain.dev/structured-tools/)]
+* Chat with History
+  - Structured chat | LangChain[[python.langchain.com](https://python.langchain.com/v0.1/docs/modules/agents/agent_types/structured_chat/#adding-in-memory)]
+  - Does the new Structured Chat Agent support ConversationMemory? · Issue #4000 · langchain-ai/langchain · GitHub[[github.com](https://github.com/langchain-ai/langchain/issues/4000)]
+* Agents
+  - langchain.agents.agent_types.AgentType — LangChain 0.2.1[[api.python.langchain.com](https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html)]
+  
