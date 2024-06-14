@@ -27,3 +27,5 @@
   - langchain.agents.agent_types.AgentType — LangChain 0.2.1[[api.python.langchain.com](https://api.python.langchain.com/en/latest/agents/langchain.agents.agent_types.AgentType.html)]
 * GCP CLoud Logging
   - Introducing Google Cloud Logging Python v3.0.0 | by Daniel Sanche | Google Cloud - Community | Medium[[medium.com](https://medium.com/google-cloud/introducing-google-cloud-logging-python-v3-0-0-4c548663bab4)]
+* UI
+  - Create an Generative-AI chatbot using Python and Flask: A step by step guide | by InnovatewithDataScience | Medium[[medium.com](https://medium.com/@mailsushmita.m/create-an-generative-ai-chatbot-using-python-and-flask-a-step-by-step-guide-ea39439cf9ed)]
