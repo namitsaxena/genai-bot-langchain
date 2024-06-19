@@ -4,7 +4,7 @@ class KubernetesUtility():
     def __init__(self):
         print("Kubernetes utility initialized..")
 
-    def execute_command(self, namespace, command, kubectl_context="aaa"):
+    def execute_command(self, namespace, command, kubectl_context="dv-k8-cluster"):
         print(f"Executing command: {command} in (context: {kubectl_context}, namespace: {namespace})")
         return "command_output"
 

@@ -2,6 +2,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.agents import AgentType, initialize_agent
 from src.agents.ToolFactory import get_tools
+import json
 
 MODEL_NAME = "text-bison@001"
 
@@ -22,8 +23,11 @@ class BotAgent:
     def setup_agent(self):
         """
         sets up agent with chat history
+        if intermediate steps
+            - `run` not supported when there is not exactly one output key. Got ['output', 'intermediate_steps'].
         :return:
         """
+        print("Initializing the agent")
         chat_history = MessagesPlaceholder(variable_name="chat_history")
         memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
@@ -39,10 +43,25 @@ class BotAgent:
                 "input_variables": ["input", "agent_scratchpad", "chat_history"]
             },
             memory=memory,
+            return_intermediate_steps=False
         )
 
     def process(self, prompt):
+        response = None
         if self.is_agent_enabled:
-            return self.agent.run(prompt)
+            response = self.agent.run(prompt)
         else:
-            return self.llm(prompt)
+            response = self.llm(prompt)
+
+        if "action_input" in response:
+            print(f"Unexpected response found: {response}")
+            try:
+                json_output = json.loads(response)
+                return json_output["action_input"]
+            except ValueError as e:
+                print(f"failed to parse json: {response}")
+                if self.is_agent_enabled:
+                    self.setup_agent()
+                return "Sorry I had a an error with this!! Can you ask again"
+
+        return response

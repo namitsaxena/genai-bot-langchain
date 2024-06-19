@@ -39,7 +39,7 @@ class KubernetesTool(BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("execute_command does not support async")
 
-    def execute_command(self, namespace, command, kubectl_context="aaa"):
+    def execute_command(self, command, namespace, kubectl_context="aaa"):
         print(f"Executing command: {command} in (context: {kubectl_context}, namespace: {namespace})")
         return """
         NAME                                READY   STATUS    RESTARTS   AGE
