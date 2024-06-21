@@ -1,3 +1,5 @@
+from gc import set_debug
+
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.agents import AgentType, initialize_agent
@@ -8,6 +10,10 @@ MODEL_NAME = "text-bison@001"
 
 
 # sets up a chat agent (with conversation history)
+def set_verbose(param):
+    pass
+
+
 class BotAgent:
 
     def __init__(self, llm, use_agent=True):
@@ -38,6 +44,7 @@ class BotAgent:
             self.llm,
             agent=AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION,
             verbose=True,
+            debug=True,
             agent_kwargs={
                 "memory_prompts": [chat_history],
                 "input_variables": ["input", "agent_scratchpad", "chat_history"]
@@ -45,6 +52,10 @@ class BotAgent:
             memory=memory,
             return_intermediate_steps=False
         )
+
+        # https://python.langchain.com/v0.1/docs/guides/development/debugging/
+        # set_debug(True) # printing GC collector, etc details but not input/outputs
+        # set_verbose(True)
 
     def process(self, prompt):
         response = None
