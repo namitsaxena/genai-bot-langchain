@@ -1,4 +1,4 @@
-from src.BotAgent import BotAgent
+from src.agents.BotAgent import BotAgent
 from src.VertexLangChain import VertexLangChain
 
 ###################

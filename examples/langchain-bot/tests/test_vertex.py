@@ -17,7 +17,7 @@ class TestVertex(unittest.TestCase):
 
     def test_ex2(self):
         llm = VertexLangChain(PROJECT_ID, REGION)
-        prompt = "Improve this description : In this notebook we'll explore advanced prompting techniques, and building ReAct agents using LangChain and Vertex AI "
+        prompt = "Improve this description : In this notebook we'll explore advanced prompting techniques, and building ReAct tools using LangChain and Vertex AI "
         prediction = llm.predict(prompt)
         print(f"Predication: {prediction}")
 

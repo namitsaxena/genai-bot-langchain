@@ -3,7 +3,7 @@ from gc import set_debug
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 from langchain.agents import AgentType, initialize_agent
-from src.agents.ToolFactory import get_tools
+from src.tools.ToolFactory import get_tools
 import json
 
 MODEL_NAME = "text-bison@001"

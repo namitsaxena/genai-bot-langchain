@@ -1,8 +1,8 @@
 import unittest
 
-from src.BotAgent import BotAgent
+from src.agents.BotAgent import BotAgent
 from src.VertexLangChain import VertexLangChain
-from src.agents.ToolFunctions import BOT_NAME
+from src.tools.ToolFunctions import BOT_NAME
 
 PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}

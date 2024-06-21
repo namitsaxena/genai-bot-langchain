@@ -1,9 +1,9 @@
 from langchain.tools import StructuredTool
 
-from src.agents.KubernetesTool import KubernetesTool
-from src.agents.PipelineUtility import PipelineUtility
-from src.agents.SchedulerUtility import SchedulerUtility
-from src.agents.ToolFunctions import get_current_date, get_current_time, some_function, get_bot_name
+from src.tools.KubernetesTool import KubernetesTool
+from src.tools.PipelineUtility import PipelineUtility
+from src.tools.SchedulerUtility import SchedulerUtility
+from src.tools.ToolFunctions import get_current_date, get_current_time, some_function, get_bot_name
 
 
 def get_tools():
