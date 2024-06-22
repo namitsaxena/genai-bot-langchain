@@ -3,6 +3,8 @@ langchain==0.0.310
 # needed for retrieving logs (and writing too if needed)
 google-cloud-logging>=3.0.0
 Flask
+# core needed for custom agents
+# langchain-core
 
 # prettyprinter==0.18.0
 # wikipedia==1.4.0

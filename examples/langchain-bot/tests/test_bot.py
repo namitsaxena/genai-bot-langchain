@@ -86,6 +86,7 @@ class TestCodeBot(unittest.TestCase):
 
     # tests tools direct return functionality
     # returns agent's reply without any interpretation
+    # the return_direct method has been set for this tool
     def test_capability_pipeline_job_direct_return(self):
         prompt = "what's the status of pipeline job my-job-2"
         prediction = self.bot.process(prompt)
@@ -104,3 +105,10 @@ class TestCodeBot(unittest.TestCase):
         print(f"Predication: {prediction}")
         # the final response fluctuates depending on the prompt
         assert "pod-1" in prediction or "running" in prediction
+
+    def test_non_tool_question(self):
+        prompt = "what's the weather right now"
+        prediction = self.bot.process(prompt)
+        print(f"Predication: {prediction}")
+        # I don't have access to weather information.
+        assert "access" in prediction

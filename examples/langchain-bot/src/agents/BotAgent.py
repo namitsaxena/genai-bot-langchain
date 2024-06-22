@@ -39,6 +39,9 @@ class BotAgent:
 
         tools = get_tools()
 
+        # https://github.com/langchain-ai/langchain/issues/4044#issuecomment-1585863266
+        # https://github.com/langchain-ai/langchain/issues/1774
+        PREFIX = """Answer the following questions only using the tools available. Ask for more input if the user doesn't supply necessary parameters"""
         self.agent = initialize_agent(
             tools,
             self.llm,
@@ -47,11 +50,15 @@ class BotAgent:
             debug=True,
             agent_kwargs={
                 "memory_prompts": [chat_history],
-                "input_variables": ["input", "agent_scratchpad", "chat_history"]
+                "input_variables": ["input", "agent_scratchpad", "chat_history"],
+                "prefix": PREFIX
             },
             memory=memory,
             return_intermediate_steps=False
         )
+
+        # existing prompt
+        print("Agent Prompt: " + self.agent.agent.llm_chain.prompt.messages[0].prompt.template)
 
         # https://python.langchain.com/v0.1/docs/guides/development/debugging/
         # set_debug(True) # printing GC collector, etc details but not input/outputs
