@@ -1,5 +1,0 @@
-# pl check Dockerfile for full requirements
-#pulsar-client>=3.1.0
-#orjson==3.0.1
-#chromadb
-langchain-chroma
