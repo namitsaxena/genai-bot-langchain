@@ -25,6 +25,12 @@
   python3 main.py
   ```
 
+## Troubleshooting
+* Python - use python 3.8 or less than 3.12. PyCharm couldn't work correctly with 3.12 (distutils was removed in python 3.12)
+  * (Note: your setup may be different)
+  * /usr/local/bin/python3 --version (3.11)
+  * run with 3.8
+  * /Library/Frameworks/Python.framework/Versions/Current/bin
 
 ## Resources
 * Structured Tools

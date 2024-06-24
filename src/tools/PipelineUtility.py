@@ -4,9 +4,9 @@ class PipelineUtility():
     def __init__(self):
         print("Pipeline utility initialized..")
 
-    def get_job_status(self, job_name):
+    def get_pipeline_job_status(self, job_name):
         """
-        get's the given pipeline tool's job's status
+        get's the given jenkins pipeline tool's job's status
         :param job_name: job's name
         :return: job's status
         """

@@ -27,7 +27,8 @@ def some_function():
     generates a random number
     :return: random number
     """
-    return random.random()
+    # return random.random()
+    return random.randint(1, 100)
 
 
 def get_current_date():
@@ -41,7 +42,8 @@ def get_current_date():
 
 def get_current_time():
     """
-    Gets the current date (today), in the format YYYY-MM-DD
+    Gets the current time
+    What's the time right now
     """
     from datetime import datetime
     current_time = datetime.today().strftime("%Y-%m-%d_%H%M%S")

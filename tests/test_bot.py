@@ -55,6 +55,13 @@ class TestCodeBot(unittest.TestCase):
         assert user_name in prediction
 
     def test_capability_time(self):
+        """
+        If the function is not clearly commented
+        tries to get weather in san francisco
+        and then errors
+        Returns:
+
+        """
         prompt = "what's the current time?"
         prediction = self.bot.process(prompt)
         print(f"Predication: {prediction}")
@@ -71,7 +78,7 @@ class TestCodeBot(unittest.TestCase):
         prediction = self.bot.process(prompt)
 
         print(f"Predication: {prediction}")
-        print("Intermediate Responses: " + prediction["intermediate_steps"])
+        # print("Intermediate Responses: " + prediction["intermediate_steps"])
 
     # observation: confuses between
     # scheduled and pipeline jobs

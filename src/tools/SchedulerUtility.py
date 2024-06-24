@@ -6,11 +6,13 @@ class SchedulerUtility():
 
     def get_job_status(self, job_name):
         """
+        answers questions about scheduler tool
+        and not about jenkins pipeline or any other pipeline
         get's the given scheduler tool's job's status
         :param job_name: job's name
         :return: job's status
         """
-        print(f"getting status for job: {job_name}")
+        print(f"getting status for scheduler job: {job_name}")
         return "running"
 
     # stops the job

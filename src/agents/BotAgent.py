@@ -58,7 +58,7 @@ class BotAgent:
         )
 
         # existing prompt
-        print("Agent Prompt: " + self.agent.agent.llm_chain.prompt.messages[0].prompt.template)
+        # print("Agent Prompt: " + self.agent.agent.llm_chain.prompt.messages[0].prompt.template)
 
         # https://python.langchain.com/v0.1/docs/guides/development/debugging/
         # set_debug(True) # printing GC collector, etc details but not input/outputs

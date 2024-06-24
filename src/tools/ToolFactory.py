@@ -34,8 +34,11 @@ def get_tools():
     scheduler = SchedulerUtility()
     tools.append(StructuredTool.from_function(scheduler.get_job_status))
 
+    # NOTE: always uses this to answer job status despite all comments if
+    # function names are same - whatever comes later gets used in this case
     pipeline = PipelineUtility()
-    tools.append(StructuredTool.from_function(pipeline.get_job_status, return_direct=True))
+    tools.append(StructuredTool.from_function(pipeline.get_pipeline_job_status, return_direct=True))
+
 
     ###################################
     # setup tool classes
