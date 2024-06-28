@@ -3,10 +3,11 @@ from langchain.tools import StructuredTool
 from src.tools.KubernetesTool import KubernetesTool
 from src.tools.PipelineUtility import PipelineUtility
 from src.tools.SchedulerUtility import SchedulerUtility
-from src.tools.ToolFunctions import get_current_date, get_current_time, some_function, get_bot_name
+from src.tools.ToolFunctions import get_current_date, get_current_time, some_function, get_bot_name, get_input
+from langchain_community.tools import HumanInputRun
 
 
-def get_tools():
+def get_tools(load_human_input=False):
     tools = []
     ###################################
     # setup functions
@@ -39,10 +40,14 @@ def get_tools():
     pipeline = PipelineUtility()
     tools.append(StructuredTool.from_function(pipeline.get_pipeline_job_status, return_direct=True))
 
-
     ###################################
     # setup tool classes
     ###################################
     tools.append(KubernetesTool())
+
+    if load_human_input:
+        tools.append(HumanInputRun(input_func=get_input))
+        # ui = get_ui()
+        # tools.append(HumanInputRun(input_func=ui.app.ge))
 
     return tools

@@ -14,8 +14,9 @@ BOT_NAME = "Gort"
 # What's your name, who are you both work
 def get_bot_name():
     """
-    gets the bot's name
+    gets the bot's name, not customer or human's name
     the name to return when asked for your name
+    answers question what's your name
     This is not when asked for
     :return: the name of the agent
     """
@@ -48,3 +49,22 @@ def get_current_time():
     from datetime import datetime
     current_time = datetime.today().strftime("%Y-%m-%d_%H%M%S")
     return current_time
+
+
+def get_input() -> str:
+    """
+    HumanInput function
+    Returns:
+
+    """
+    print("Insert your text. Enter 'q' or press Ctrl-D (or Ctrl-Z on Windows) to end.")
+    contents = []
+    while True:
+        try:
+            line = input()
+        except EOFError:
+            break
+        if line == "q":
+            break
+        contents.append(line)
+    return "\n".join(contents)
