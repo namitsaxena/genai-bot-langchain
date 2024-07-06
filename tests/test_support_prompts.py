@@ -1,16 +1,15 @@
 import unittest
 
-from src.ReAct import ReActProcessor
-from src.VertexLangChain import VertexLangChain
-
-PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
-REGION = "us-central1"  # @param {type:"string"}
+from src.LLMFactory import get_llm
+from src.LLMFactory import PROVIDER_VERTEX
 
 
 class TestVertexSupportBot(unittest.TestCase):
+    def setUp(self):
+        self.llm = get_llm(PROVIDER_VERTEX)
 
     def test_context_table(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
+        # llm = VertexLangChain(PROJECT_ID, REGION)
         prompt = """
         Answer from the below context using the table and the example questions and answers: 
 		context: 
@@ -27,11 +26,10 @@ class TestVertexSupportBot(unittest.TestCase):
 		question: "What's the KCC cluster conext for environment dv" 
 		Ansewer exactly in the format given in the examples in context 
         """
-        prediction = llm.predict(prompt)
+        prediction = self.llm.predict(prompt)
         print(f"Predication: {prediction}")
 
     def test_context_with_qna(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
         context = """
         Answer from the below context using the table and the example questions and answers: 
 		context:
@@ -55,5 +53,5 @@ class TestVertexSupportBot(unittest.TestCase):
         query = "What's the gke dev cluster for new release"
         query = "What's the gke dev cluster for production"
         prompt = context.replace("{query}", query)
-        prediction = llm.predict(prompt)
+        prediction = self.llm.predict(prompt)
         print(f"Predication: {prediction}")

@@ -1,21 +1,20 @@
 from src.agents.BotAgent import BotAgent
-from src.VertexLangChain import VertexLangChain
+from src.app.ChatWebApp import ChatWebApp
+from src.LLMFactory import get_llm
+
 
 ###################
 # constants
 ###################
-from src.app.ChatWebApp import ChatWebApp
-
-PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
-REGION = "us-central1"  # @param {type:"string"}
 TEMPLATES_DIR = "../../resources/templates"
 
 
-def get_bot_instance(gcp_project_id, gcp_region):
-    llm = VertexLangChain(gcp_project_id, gcp_region)
-    return BotAgent(llm.get_vertexai())
+def get_bot_instance():
+    # get default llm provider
+    llm = get_llm()
+    return BotAgent(llm)
 
 
-def get_app_instance(gcp_project_id, gcp_region, templates_dir_path=None):
-    bot = get_bot_instance(gcp_project_id, gcp_region)
+def get_app_instance(templates_dir_path=None):
+    bot = get_bot_instance()
     return ChatWebApp(bot)

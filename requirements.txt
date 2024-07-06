@@ -1,6 +1,7 @@
 google-cloud-aiplatform
 langchain
 langchain-community
+langchain_openai
 Flask
 # needed for retrieving logs (and writing too if needed)
 google-cloud-logging>=3.0.0

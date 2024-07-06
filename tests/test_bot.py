@@ -1,8 +1,10 @@
 import unittest
 
 from src.agents.BotAgent import BotAgent
-from src.VertexLangChain import VertexLangChain
+# from src.VertexLangChain import VertexLangChain
 from src.tools.ToolFunctions import BOT_NAME
+from src.LLMFactory import get_llm
+from src.LLMFactory import PROVIDER_OPENAI, PROVIDER_VERTEX
 
 PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
@@ -12,8 +14,11 @@ class TestCodeBot(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        llm = VertexLangChain(PROJECT_ID, REGION)
-        TestCodeBot.bot = BotAgent(llm.get_vertexai())
+        # llm = VertexLangChain(PROJECT_ID, REGION)
+        # TestCodeBot.bot = BotAgent(llm.get_vertexai())
+        llm = get_llm()
+        TestCodeBot.bot = BotAgent(llm)
+
 
     def setUp(self):
         # llm = VertexLangChain(PROJECT_ID, REGION)

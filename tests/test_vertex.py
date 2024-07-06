@@ -1,36 +1,33 @@
 import unittest
 
-from src.ReAct import ReActProcessor
-from src.VertexLangChain import VertexLangChain
-
-PROJECT_ID = "nsx-sandbox"  # @param {type:"string"}
-REGION = "us-central1"  # @param {type:"string"}
+from src.samples.ReAct import ReActProcessor
+from src.LLMFactory import get_llm
+from src.LLMFactory import PROVIDER_VERTEX
 
 
 class TestVertex(unittest.TestCase):
 
+    def setUp(self):
+        self.llm = get_llm(PROVIDER_VERTEX)
+
     def test_simple_prediction(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
         prompt = "Write a 2-day itinerary for France."
-        prediction = llm.predict(prompt)
+        prediction = self.llm.predict(prompt)
         print(f"Predication: {prediction}")
 
     def test_ex2(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
         prompt = "Improve this description : In this notebook we'll explore advanced prompting techniques, and building ReAct tools using LangChain and Vertex AI "
-        prediction = llm.predict(prompt)
+        prediction = self.llm.predict(prompt)
         print(f"Predication: {prediction}")
 
     def test_react_processing(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
-        react = ReActProcessor(llm.get_vertexai())
+        react = ReActProcessor(self.llm)
         prediction = react.process("What is today's date?")
         print(f"Predication: {prediction}")
         prediction = react.process("Who are you?")
         print(f"Predication: {prediction}")
 
     def test_chain_of_thought_ex1(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
         prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls.
         Each can has 3 tennis balls. How many tennis balls does he have now?
         A: The answer is 11.
@@ -39,11 +36,11 @@ class TestVertex(unittest.TestCase):
         A:"""
 
         print(f"prompt: {prompt}")
-        output = llm.predict(prompt)
+        output = self.llm.predict(prompt)
         print(f"Predication: {output}")
 
     def test_chain_of_thought_ex2(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
+        llm = get_llm(PROVIDER_VERTEX)
         prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls.
         Each can has 3 tennis balls. How many tennis balls does he have now?
         A: Roger started with 5 balls. 2 cans of 3 tennis balls
@@ -53,11 +50,10 @@ class TestVertex(unittest.TestCase):
         A:"""
 
         print(f"prompt: {prompt}")
-        output = llm.predict(prompt)
+        output = self.llm.predict(prompt)
         print(f"Predication: {output}")
 
     def test_chain_of_thought_ex3(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
         prompt = """Q: Roger has 5 tennis balls. He buys 2 more cans of tennis balls.
         Each can has 3 tennis balls. How many tennis balls does he have now?
         A: The answer is 11.
@@ -67,11 +63,10 @@ class TestVertex(unittest.TestCase):
         A: Let's think step by step."""
 
         print(f"prompt: {prompt}")
-        output = llm.predict(prompt)
+        output = self.llm.predict(prompt)
         print(f"Predication: {output}")
 
     def test_chain_of_thought_self_consistency(self):
-        llm = VertexLangChain(PROJECT_ID, REGION)
         from langchain.llms import VertexAI
         from operator import itemgetter
         from langchain.prompts import PromptTemplate
